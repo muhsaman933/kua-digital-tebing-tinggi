@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Survei Masjid/Musholla - KUA Tebing Tinggi</title>
+  <style>
+    body { font-family: 'Segoe UI', sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+    form { max-width: 700px; margin: auto; background: white; padding: 25px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    label { display: block; margin-top: 15px; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 20px; padding: 10px 20px; background-color: #2e7d32; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background-color: #1b5e20; }
+    #message { margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <h2 style="text-align:center; color:#2e7d32;">Survei Masjid/Musholla - KUA Tebing Tinggi</h2>
+  <form id="surveyForm">
+    <label>Nama Masjid/Musholla</label>
+    <input type="text" name="nama_masjid" required />
+
+    <label>Kelurahan/Desa</label>
+    <select name="kelurahan" required>
+      <option value="">-- Pilih --</option>
+      <option>Kelurahan A</option>
+      <option>Kelurahan B</option>
+      <option>Kelurahan C</option>
+    </select>
+
+    <label>Alamat</label>
+    <textarea name="alamat" rows="2"></textarea>
+
+    <label>Tahun Berdiri</label>
+    <input type="number" name="tahun_berdiri" />
+
+    <label>Kapasitas Jemaah</label>
+    <input type="number" name="kapasitas" />
+
+    <label>Fasilitas (pisahkan dengan koma)</label>
+    <input type="text" name="fasilitas" placeholder=" Contoh: MCK, Parkir, AC" />
+
+    <label>Kegiatan Rutin</label>
+    <input type="text" name="kegiatan_rutin" />
+
+    <label>Ketua</label>
+    <input type="text" name="ketua" />
+
+    <label>Kontak</label>
+    <input type="text" name="kontak" />
+
+    <label>Keterangan</label>
+    <textarea name="keterangan" rows="3"></textarea>
+
+    <button type="submit">Kirim Survei</button>
+    <div id="message"></div>
+  </form>
+
+  <script>
+    document.getElementById('surveyForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      const res = await fetch('/api/survei', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const result = await res.json();
+      document.getElementById('message').textContent = result.message || 'Terjadi kesalahan';
+    });
+  </script>
+</body>
+</html>
